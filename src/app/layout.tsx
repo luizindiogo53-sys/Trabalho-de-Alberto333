@@ -14,6 +14,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="pt-BR" className={`${geist.variable} scroll-smooth`} suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var theme=JSON.parse(localStorage.getItem("escola.theme"));document.documentElement.classList.toggle("dark",theme==="dark");document.documentElement.style.colorScheme=theme==="dark"?"dark":"light";}catch(e){document.documentElement.classList.remove("dark");document.documentElement.style.colorScheme="light";}})();`,
+          }}
+        />
+      </head>
       <body>
         <ThemeProvider>
           <AuthProvider>{children}</AuthProvider>

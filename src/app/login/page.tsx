@@ -10,8 +10,8 @@ export default function LoginPage() {
   const { session, ready, login } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const router = useRouter();
-  const [username, setUsername] = useState("admin");
-  const [password, setPassword] = useState("admin123");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -40,9 +40,9 @@ export default function LoginPage() {
       <section className="mx-auto w-full max-w-md rounded-3xl border border-slate-200/80 bg-white/95 p-6 shadow-2xl shadow-slate-900/5 backdrop-blur sm:p-8 dark:border-slate-800 dark:bg-slate-900/95">
         <div className="mb-7 flex items-center gap-3 lg:hidden"><div className="grid h-11 w-11 place-items-center rounded-xl bg-blue-700 text-white"><GraduationCap size={22} /></div><div><p className="font-bold">ETEon</p><p className="text-xs text-slate-500">Escolas Técnicas de Pernambuco</p></div></div>
         <h2 className="text-2xl font-bold">Bem-vindo de volta</h2><p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Entre com suas credenciais para continuar.</p>
-        <form onSubmit={submit} className="mt-7 space-y-5">
-          <div><label className="mb-2 block text-sm font-medium">Usuário</label><div className="relative"><UserRound className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={18} /><input value={username} onChange={(event) => { setUsername(event.target.value); setError(""); }} className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 pl-11 pr-4 text-sm outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 dark:border-slate-700 dark:bg-slate-950" placeholder="Seu identificador" /></div></div>
-          <div><label className="mb-2 block text-sm font-medium">Senha</label><div className="relative"><LockKeyhole className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={18} /><input type="password" value={password} onChange={(event) => { setPassword(event.target.value); setError(""); }} className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 pl-11 pr-4 text-sm outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 dark:border-slate-700 dark:bg-slate-950" placeholder="Sua senha" /></div></div>
+        <form onSubmit={submit} autoComplete="off" className="mt-7 space-y-5">
+          <div><label className="mb-2 block text-sm font-medium">Usuário</label><div className="relative"><UserRound className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={18} /><input name="username" autoComplete="off" value={username} onChange={(event) => { setUsername(event.target.value); setError(""); }} className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 pl-11 pr-4 text-sm outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 dark:border-slate-700 dark:bg-slate-950" placeholder="Seu identificador" /></div></div>
+          <div><label className="mb-2 block text-sm font-medium">Senha</label><div className="relative"><LockKeyhole className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={18} /><input name="password" type="password" autoComplete="off" value={password} onChange={(event) => { setPassword(event.target.value); setError(""); }} className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 pl-11 pr-4 text-sm outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 dark:border-slate-700 dark:bg-slate-950" placeholder="Sua senha" /></div></div>
           {error && <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/60 dark:bg-red-950/40 dark:text-red-300">{error}</div>}
           <button disabled={loading} className="h-12 w-full rounded-xl bg-indigo-600 text-sm font-semibold text-white shadow-lg shadow-indigo-500/20 transition hover:bg-indigo-700 disabled:cursor-wait disabled:opacity-70">{loading ? "Entrando..." : "Entrar no portal"}</button>
         </form>
