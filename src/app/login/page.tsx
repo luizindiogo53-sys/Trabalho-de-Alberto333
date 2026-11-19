@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { GraduationCap, LockKeyhole, Moon, Sun, UserRound } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -46,6 +47,12 @@ export default function LoginPage() {
           {error && <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/60 dark:bg-red-950/40 dark:text-red-300">{error}</div>}
           <button disabled={loading} className="h-12 w-full rounded-xl bg-indigo-600 text-sm font-semibold text-white shadow-lg shadow-indigo-500/20 transition hover:bg-indigo-700 disabled:cursor-wait disabled:opacity-70">{loading ? "Entrando..." : "Entrar no portal"}</button>
         </form>
+        <p className="mt-5 text-center text-sm text-slate-500 dark:text-slate-400">
+          Ainda não tem uma conta?{" "}
+          <Link href="/cadastro" className="font-semibold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300">
+            Cadastre-se
+          </Link>
+        </p>
         <div className="mt-6 rounded-xl bg-slate-50 p-4 text-xs leading-5 text-slate-500 dark:bg-slate-950 dark:text-slate-400"><p className="mb-1 font-semibold text-slate-700 dark:text-slate-300">Credenciais demonstrativas</p><p>Administrador: <b>admin</b> / <b>admin123</b></p><p>Aluno: <b>eduardo.coutinho</b> / <b>aluno1</b></p></div>
       </section>
     </div>

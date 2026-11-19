@@ -238,7 +238,7 @@ export default function Cadastro() {
             }`}>
               Já tem conta?{" "}
               <Link
-                href="/"
+                href="/login"
                 className="text-green-600 font-semibold hover:underline"
               >
                 Fazer login
