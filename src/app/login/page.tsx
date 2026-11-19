@@ -3,7 +3,16 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { GraduationCap, LockKeyhole, Moon, Sun, UserRound, Video } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  GraduationCap,
+  LockKeyhole,
+  Moon,
+  Sun,
+  UserRound,
+  Video,
+} from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
 
@@ -13,6 +22,7 @@ export default function LoginPage() {
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const isSubmitting = loading && Boolean(session);
@@ -46,7 +56,7 @@ export default function LoginPage() {
         <h2 className="text-2xl font-bold">Bem-vindo de volta</h2><p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Entre com suas credenciais para continuar.</p>
         <form onSubmit={submit} autoComplete="off" className="mt-7 space-y-5">
           <div><label className="mb-2 block text-sm font-medium">Usuário</label><div className="relative"><UserRound className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={18} /><input name="username" autoComplete="off" value={username} onChange={(event) => { setUsername(event.target.value); setError(""); }} className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 pl-11 pr-4 text-sm outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 dark:border-slate-700 dark:bg-slate-950" placeholder="Seu identificador" /></div></div>
-          <div><label className="mb-2 block text-sm font-medium">Senha</label><div className="relative"><LockKeyhole className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={18} /><input name="password" type="password" autoComplete="off" value={password} onChange={(event) => { setPassword(event.target.value); setError(""); }} className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 pl-11 pr-4 text-sm outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 dark:border-slate-700 dark:bg-slate-950" placeholder="Sua senha" /></div></div>
+          <div><label htmlFor="password" className="mb-2 block text-sm font-medium">Senha</label><div className="relative"><LockKeyhole className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={18} /><input id="password" name="password" type={showPassword ? "text" : "password"} autoComplete="off" value={password} onChange={(event) => { setPassword(event.target.value); setError(""); }} className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 pl-11 pr-12 text-sm outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 dark:border-slate-700 dark:bg-slate-950" placeholder="Sua senha" /><button type="button" onClick={() => setShowPassword((visible) => !visible)} aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"} className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-slate-500 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400">{showPassword ? <EyeOff size={18} /> : <Eye size={18} />}</button></div></div>
           {error && <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/60 dark:bg-red-950/40 dark:text-red-300">{error}</div>}
           <button disabled={isSubmitting} className="h-12 w-full rounded-xl bg-indigo-600 text-sm font-semibold text-white shadow-lg shadow-indigo-500/20 transition hover:bg-indigo-700 disabled:cursor-wait disabled:opacity-70">{isSubmitting ? "Entrando..." : "Entrar no portal"}</button>
         </form>

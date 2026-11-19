@@ -3,7 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { GraduationCap, Moon, Sun } from "lucide-react";
+import { Eye, EyeOff, GraduationCap, Moon, Sun } from "lucide-react";
 import { registerAccount } from "@/services/storage";
 import { useTheme } from "@/contexts/ThemeContext";
 
@@ -13,6 +13,7 @@ export default function Cadastro() {
   const [nome, setNome] = useState("");
   const [usuario, setUsuario] = useState("");
   const [senha, setSenha] = useState("");
+  const [mostrarSenha, setMostrarSenha] = useState(false);
   const [tipo, setTipo] = useState<"aluno" | "admin">("aluno");
   const [cpf, setCpf] = useState("");
   const [matricula, setMatricula] = useState("");
@@ -176,15 +177,25 @@ export default function Cadastro() {
               <label htmlFor="senha" className="mb-2 block text-sm font-medium">
                 Senha
               </label>
-              <input
-                id="senha"
-                type="password"
-                value={senha}
-                onChange={(event) => setSenha(event.target.value)}
-                placeholder="Crie uma senha"
-                required
-                className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 dark:border-slate-700 dark:bg-slate-950"
-              />
+              <div className="relative">
+                <input
+                  id="senha"
+                  type={mostrarSenha ? "text" : "password"}
+                  value={senha}
+                  onChange={(event) => setSenha(event.target.value)}
+                  placeholder="Crie uma senha"
+                  required
+                  className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 pr-12 text-sm outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 dark:border-slate-700 dark:bg-slate-950"
+                />
+                <button
+                  type="button"
+                  onClick={() => setMostrarSenha((visivel) => !visivel)}
+                  aria-label={mostrarSenha ? "Ocultar senha" : "Mostrar senha"}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-slate-500 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400"
+                >
+                  {mostrarSenha ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
             </div>
 
             {erro && (

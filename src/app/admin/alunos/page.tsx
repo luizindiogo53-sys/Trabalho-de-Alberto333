@@ -1,7 +1,16 @@
 "use client";
 
 import { useMemo, useState, type FormEvent } from "react";
-import { Plus, Search, Pencil, Trash2, X, UserRound } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  Plus,
+  Search,
+  Pencil,
+  Trash2,
+  X,
+  UserRound,
+} from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import {
   createId,
@@ -37,6 +46,10 @@ export default function StudentsPage() {
   const [editing, setEditing] = useState<Student | null>(null);
   const [form, setForm] = useState(empty);
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [visiblePasswords, setVisiblePasswords] = useState<Set<string>>(
+    () => new Set()
+  );
 
   const filtered = useMemo(
     () =>
@@ -52,6 +65,7 @@ export default function StudentsPage() {
     setEditing(null);
     setForm({ ...empty, subjectIds });
     setError("");
+    setShowPassword(false);
     setOpen(true);
   };
 
@@ -66,7 +80,17 @@ export default function StudentsPage() {
       subjectIds: student.subjectIds,
     });
     setError("");
+    setShowPassword(false);
     setOpen(true);
+  };
+
+  const toggleStudentPassword = (studentId: string) => {
+    setVisiblePasswords((current) => {
+      const next = new Set(current);
+      if (next.has(studentId)) next.delete(studentId);
+      else next.add(studentId);
+      return next;
+    });
   };
 
   const save = (event: FormEvent) => {
@@ -219,7 +243,29 @@ export default function StudentsPage() {
                     <td className="px-5 py-4">{student.registration}</td>
                     <td className="px-5 py-4">{student.username}</td>
                     <td className="px-5 py-4 font-mono text-xs">
-                      {student.password}
+                      <div className="flex items-center gap-2">
+                        <span>
+                          {visiblePasswords.has(student.id)
+                            ? student.password
+                            : "••••••••"}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => toggleStudentPassword(student.id)}
+                          aria-label={
+                            visiblePasswords.has(student.id)
+                              ? `Ocultar senha de ${student.name}`
+                              : `Mostrar senha de ${student.name}`
+                          }
+                          className="rounded-md p-1 text-slate-500 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400"
+                        >
+                          {visiblePasswords.has(student.id) ? (
+                            <EyeOff size={16} />
+                          ) : (
+                            <Eye size={16} />
+                          )}
+                        </button>
+                      </div>
                     </td>
                     <td className="px-5 py-4">
                       <div className="flex justify-end gap-1">
@@ -292,16 +338,28 @@ export default function StudentsPage() {
                     className="mt-2 h-11 w-full rounded-xl border border-slate-200 px-3 dark:border-slate-700 dark:bg-slate-950"
                   />
                 </label>
-                <label className="text-sm font-medium">
-                  Senha
+                <div className="text-sm font-medium">
+                  <label htmlFor="student-password">Senha</label>
+                  <div className="relative mt-2">
                   <input
+                    id="student-password"
                     value={form.password}
+                    type={showPassword ? "text" : "password"}
                     onChange={(e) =>
                       setForm({ ...form, password: e.target.value })
                     }
-                    className="mt-2 h-11 w-full rounded-xl border border-slate-200 px-3 dark:border-slate-700 dark:bg-slate-950"
+                    className="h-11 w-full rounded-xl border border-slate-200 px-3 pr-11 dark:border-slate-700 dark:bg-slate-950"
                   />
-                </label>
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((visible) => !visible)}
+                      aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-slate-500 hover:text-indigo-600 dark:text-slate-400 dark:hover:text-indigo-400"
+                    >
+                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
+                  </div>
+                </div>
               </div>
               <label className="block text-sm font-medium">
                 E-mail
