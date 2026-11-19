@@ -3,14 +3,13 @@
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { GraduationCap, Moon, Sun } from "lucide-react";
 import { registerAccount } from "@/services/storage";
 import { useTheme } from "@/contexts/ThemeContext";
 
 export default function Cadastro() {
   const router = useRouter();
   const { theme, toggleTheme } = useTheme();
-  const escuro = theme === "dark";
-
   const [nome, setNome] = useState("");
   const [usuario, setUsuario] = useState("");
   const [senha, setSenha] = useState("");
@@ -19,14 +18,13 @@ export default function Cadastro() {
   const [matricula, setMatricula] = useState("");
   const [erro, setErro] = useState("");
 
-  function cadastrar(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  function cadastrar(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
     setErro("");
 
-    const usuarioFinal = usuario.trim();
     const result = registerAccount({
       name: nome,
-      username: usuarioFinal,
+      username: usuario.trim(),
       password: senha,
       role: tipo,
       registration: matricula,
@@ -41,67 +39,67 @@ export default function Cadastro() {
   }
 
   return (
-    <main
-      className={`min-h-screen flex items-center justify-center p-5 transition-colors duration-300 ${
-        escuro ? "bg-[#111827]" : "bg-gray-50"
-      }`}
-    >
-      <div className="w-full max-w-md">
-
-        <div className="flex justify-end mb-5">
-          <button
-            type="button"
-            onClick={toggleTheme}
-            className={`text-sm px-4 py-2 rounded-lg transition ${
-              escuro
-                ? "bg-gray-800 text-gray-200 hover:bg-gray-700"
-                : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-100"
-            }`}
-          >
-            {escuro ? "☀ Modo claro" : "☾ Modo escuro"}
-          </button>
-        </div>
-
-        <div
-          className={`p-8 rounded-2xl border shadow-sm transition-colors duration-300 ${
-            escuro
-              ? "bg-gray-900 border-gray-800"
-              : "bg-white border-gray-100"
-          }`}
-        >
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold tracking-tight">
-              <span className={escuro ? "text-white" : "text-gray-900"}>ETE</span>
-              <span className="text-blue-700">on</span>
-            </h1>
-
-            <p className={`text-sm mt-2 ${
-              escuro ? "text-gray-400" : "text-gray-500"
-            }`}>
-              Crie sua conta para continuar.
-            </p>
-          </div>
-
-          <form onSubmit={cadastrar} className="space-y-5">
-
+    <main className="relative min-h-screen overflow-hidden bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(30,64,175,0.14),transparent_32%),radial-gradient(circle_at_bottom_left,rgba(185,28,28,0.08),transparent_30%)]" />
+      <button
+        type="button"
+        onClick={toggleTheme}
+        aria-label="Alternar tema"
+        className="absolute right-5 top-5 z-10 grid h-11 w-11 place-items-center rounded-xl border border-slate-200 bg-white/80 text-slate-600 shadow-sm backdrop-blur dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-300"
+      >
+        {theme === "light" ? <Moon size={19} /> : <Sun size={19} />}
+      </button>
+      <div className="relative mx-auto grid min-h-screen max-w-6xl items-center gap-8 px-5 py-20 lg:grid-cols-[1fr_440px] lg:px-8">
+        <section className="hidden pr-16 lg:block">
+          <div className="mb-8 flex items-center gap-3">
+            <div className="grid h-12 w-12 place-items-center rounded-2xl bg-blue-700 text-white shadow-xl shadow-blue-900/20">
+              <GraduationCap size={25} />
+            </div>
             <div>
-              <label className={`block text-sm font-medium mb-2 ${
-                escuro ? "text-gray-200" : "text-gray-700"
-              }`}>
+              <p className="text-xl font-bold">ETEon</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400">
+                Escolas Técnicas de Pernambuco
+              </p>
+            </div>
+          </div>
+          <h1 className="max-w-xl text-5xl font-bold leading-[1.08] tracking-tight">
+            Faça parte da sua comunidade escolar.
+          </h1>
+          <p className="mt-5 max-w-lg text-lg leading-8 text-slate-500 dark:text-slate-400">
+            Crie sua conta para acompanhar sua jornada acadêmica com praticidade.
+          </p>
+        </section>
+
+        <section className="mx-auto w-full max-w-md rounded-3xl border border-slate-200/80 bg-white/95 p-6 shadow-2xl shadow-slate-900/5 backdrop-blur sm:p-8 dark:border-slate-800 dark:bg-slate-900/95">
+          <div className="mb-7 flex items-center gap-3 lg:hidden">
+            <div className="grid h-11 w-11 place-items-center rounded-xl bg-blue-700 text-white">
+              <GraduationCap size={22} />
+            </div>
+            <div>
+              <p className="font-bold">ETEon</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Escolas Técnicas de Pernambuco
+              </p>
+            </div>
+          </div>
+          <h2 className="text-2xl font-bold">Crie sua conta</h2>
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+            Preencha seus dados para começar.
+          </p>
+
+          <form onSubmit={cadastrar} className="mt-7 space-y-4">
+            <div>
+              <label htmlFor="tipo" className="mb-2 block text-sm font-medium">
                 Tipo de conta
               </label>
-
               <select
+                id="tipo"
                 value={tipo}
                 onChange={(event) => {
                   const value = event.target.value;
                   if (value === "aluno" || value === "admin") setTipo(value);
                 }}
-                className={`w-full p-3 rounded-lg border outline-none focus:ring-2 focus:ring-green-500 ${
-                  escuro
-                    ? "bg-gray-800 border-gray-700 text-white"
-                    : "bg-gray-50 border-gray-200 text-gray-800"
-                }`}
+                className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 dark:border-slate-700 dark:bg-slate-950"
               >
                 <option value="aluno">Aluno</option>
                 <option value="admin">Administrador</option>
@@ -109,151 +107,113 @@ export default function Cadastro() {
             </div>
 
             <div>
-              <label className={`block text-sm font-medium mb-2 ${
-                escuro ? "text-gray-200" : "text-gray-700"
-              }`}>
+              <label htmlFor="nome" className="mb-2 block text-sm font-medium">
                 Nome completo
               </label>
-
               <input
+                id="nome"
                 type="text"
                 value={nome}
-                onChange={(e) => setNome(e.target.value)}
+                onChange={(event) => setNome(event.target.value)}
                 placeholder="Digite seu nome"
                 required
-                className={`w-full p-3 rounded-lg border outline-none focus:ring-2 focus:ring-green-500 ${
-                  escuro
-                    ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500"
-                    : "bg-gray-50 border-gray-200 text-gray-800"
-                }`}
+                className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 dark:border-slate-700 dark:bg-slate-950"
               />
             </div>
 
             {tipo === "admin" && (
               <>
                 <div>
-                  <label className={`block text-sm font-medium mb-2 ${
-                    escuro ? "text-gray-200" : "text-gray-700"
-                  }`}>
+                  <label htmlFor="cpf" className="mb-2 block text-sm font-medium">
                     CPF
                   </label>
-
                   <input
+                    id="cpf"
                     type="text"
                     value={cpf}
-                    onChange={(e) => setCpf(e.target.value)}
+                    onChange={(event) => setCpf(event.target.value)}
                     placeholder="Digite seu CPF"
                     required
-                    className={`w-full p-3 rounded-lg border outline-none focus:ring-2 focus:ring-green-500 ${
-                      escuro
-                        ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500"
-                        : "bg-gray-50 border-gray-200 text-gray-800"
-                    }`}
+                    className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 dark:border-slate-700 dark:bg-slate-950"
                   />
                 </div>
-
                 <div>
-                  <label className={`block text-sm font-medium mb-2 ${
-                    escuro ? "text-gray-200" : "text-gray-700"
-                  }`}>
+                  <label htmlFor="matricula" className="mb-2 block text-sm font-medium">
                     Matrícula
                   </label>
-
                   <input
+                    id="matricula"
                     type="text"
                     value={matricula}
-                    onChange={(e) => setMatricula(e.target.value)}
+                    onChange={(event) => setMatricula(event.target.value)}
                     placeholder="Digite sua matrícula"
                     required
-                    className={`w-full p-3 rounded-lg border outline-none focus:ring-2 focus:ring-green-500 ${
-                      escuro
-                        ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500"
-                        : "bg-gray-50 border-gray-200 text-gray-800"
-                    }`}
+                    className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 dark:border-slate-700 dark:bg-slate-950"
                   />
                 </div>
               </>
             )}
 
             <div>
-              <label className={`block text-sm font-medium mb-2 ${
-                escuro ? "text-gray-200" : "text-gray-700"
-              }`}>
+              <label htmlFor="usuario" className="mb-2 block text-sm font-medium">
                 Usuário
               </label>
-
               <input
+                id="usuario"
                 type="text"
                 value={usuario}
-                onChange={(e) => {
-                  setUsuario(e.target.value);
+                onChange={(event) => {
+                  setUsuario(event.target.value);
                   setErro("");
                 }}
                 placeholder="Escolha um usuário"
                 required
-                className={`w-full p-3 rounded-lg border outline-none focus:ring-2 focus:ring-green-500 ${
-                  escuro
-                    ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500"
-                    : "bg-gray-50 border-gray-200 text-gray-800"
-                }`}
+                className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 dark:border-slate-700 dark:bg-slate-950"
               />
             </div>
 
             <div>
-              <label className={`block text-sm font-medium mb-2 ${
-                escuro ? "text-gray-200" : "text-gray-700"
-              }`}>
+              <label htmlFor="senha" className="mb-2 block text-sm font-medium">
                 Senha
               </label>
-
               <input
+                id="senha"
                 type="password"
                 value={senha}
-                onChange={(e) => setSenha(e.target.value)}
+                onChange={(event) => setSenha(event.target.value)}
                 placeholder="Crie uma senha"
                 required
-                className={`w-full p-3 rounded-lg border outline-none focus:ring-2 focus:ring-green-500 ${
-                  escuro
-                    ? "bg-gray-800 border-gray-700 text-white placeholder-gray-500"
-                    : "bg-gray-50 border-gray-200 text-gray-800"
-                }`}
+                className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 dark:border-slate-700 dark:bg-slate-950"
               />
             </div>
 
             {erro && (
-              <p className="text-sm text-red-500">
+              <div
+                role="alert"
+                className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/60 dark:bg-red-950/40 dark:text-red-300"
+              >
                 {erro}
-              </p>
+              </div>
             )}
 
             <button
               type="submit"
-              className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold p-3 rounded-lg transition duration-200"
+              className="h-12 w-full rounded-xl bg-indigo-600 text-sm font-semibold text-white shadow-lg shadow-indigo-500/20 transition hover:bg-indigo-700"
             >
               Cadastrar
             </button>
-
-            <p className={`text-sm text-center ${
-              escuro ? "text-gray-400" : "text-gray-500"
-            }`}>
-              Já tem conta?{" "}
-              <Link
-                href="/login"
-                className="text-green-600 font-semibold hover:underline"
-              >
-                Fazer login
-              </Link>
-            </p>
-
           </form>
-        </div>
 
-        <p className={`text-xs text-center mt-6 ${
-          escuro ? "text-gray-600" : "text-gray-400"
-        }`}>
-          © 2026 ETEon — Escolas Técnicas de Pernambuco
-        </p>
-
+          <p className="mt-5 text-center text-sm text-slate-500 dark:text-slate-400">
+            Já tem conta?{" "}
+            <Link
+              href="/login"
+              className="font-semibold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300"
+            >
+              Fazer login
+            </Link>
+          </p>
+        </section>
       </div>
     </main>
   );
