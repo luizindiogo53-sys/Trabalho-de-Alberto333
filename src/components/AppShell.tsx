@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import {
   Award, BookOpen, ChevronRight, GraduationCap, LayoutDashboard, LogOut, Menu,
-  Settings, Sun, Moon, Users, UserRound, ClipboardList, X,
+  Settings, Sun, Moon, Users, UserRound, ClipboardList, Video, X,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -33,6 +33,7 @@ export function AppShell({ children, title, subtitle }: AppShellProps) {
     { href: "/admin/disciplinas", label: "Disciplinas", icon: BookOpen },
     { href: "/admin/notas", label: "Notas e médias", icon: ClipboardList },
     { href: "/equipe", label: "Equipe", icon: Award },
+    { href: "/apresentacao", label: "Apresentação", icon: Video },
   ];
   const studentLinks = [
     { href: "/aluno", label: "Início", icon: LayoutDashboard },
