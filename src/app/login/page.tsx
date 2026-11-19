@@ -3,7 +3,7 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { GraduationCap, LockKeyhole, Moon, Sun, UserRound } from "lucide-react";
+import { GraduationCap, LockKeyhole, Moon, Sun, UserRound, Video } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
 
@@ -15,9 +15,12 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const isSubmitting = loading && Boolean(session);
 
   useEffect(() => {
-    if (ready && session) router.replace(session.role === "admin" ? "/admin" : "/aluno");
+    if (ready && session) {
+      router.replace(session.role === "admin" ? "/admin" : "/aluno");
+    }
   }, [ready, router, session]);
 
   const submit = (event: FormEvent) => {
@@ -45,8 +48,24 @@ export default function LoginPage() {
           <div><label className="mb-2 block text-sm font-medium">Usuário</label><div className="relative"><UserRound className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={18} /><input name="username" autoComplete="off" value={username} onChange={(event) => { setUsername(event.target.value); setError(""); }} className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 pl-11 pr-4 text-sm outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 dark:border-slate-700 dark:bg-slate-950" placeholder="Seu identificador" /></div></div>
           <div><label className="mb-2 block text-sm font-medium">Senha</label><div className="relative"><LockKeyhole className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={18} /><input name="password" type="password" autoComplete="off" value={password} onChange={(event) => { setPassword(event.target.value); setError(""); }} className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 pl-11 pr-4 text-sm outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 dark:border-slate-700 dark:bg-slate-950" placeholder="Sua senha" /></div></div>
           {error && <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/60 dark:bg-red-950/40 dark:text-red-300">{error}</div>}
-          <button disabled={loading} className="h-12 w-full rounded-xl bg-indigo-600 text-sm font-semibold text-white shadow-lg shadow-indigo-500/20 transition hover:bg-indigo-700 disabled:cursor-wait disabled:opacity-70">{loading ? "Entrando..." : "Entrar no portal"}</button>
+          <button disabled={isSubmitting} className="h-12 w-full rounded-xl bg-indigo-600 text-sm font-semibold text-white shadow-lg shadow-indigo-500/20 transition hover:bg-indigo-700 disabled:cursor-wait disabled:opacity-70">{isSubmitting ? "Entrando..." : "Entrar no portal"}</button>
         </form>
+        <section className="mt-6 border-t border-slate-100 pt-5 dark:border-slate-800">
+          <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold">
+            <Video size={17} className="text-indigo-600 dark:text-indigo-400" />
+            Apresentação da plataforma
+          </h3>
+          <video
+            className="aspect-video w-full rounded-xl bg-slate-950"
+            controls
+            preload="metadata"
+            width="1280"
+            height="720"
+          >
+            <source src="/apresentacao.mp4" type="video/mp4" />
+            Seu navegador não oferece suporte à reprodução de vídeo.
+          </video>
+        </section>
         <p className="mt-5 text-center text-sm text-slate-500 dark:text-slate-400">
           Ainda não tem uma conta?{" "}
           <Link href="/cadastro" className="font-semibold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300">

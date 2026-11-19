@@ -39,6 +39,7 @@ export function AppShell({ children, title, subtitle }: AppShellProps) {
     { href: "/aluno", label: "Início", icon: LayoutDashboard },
     { href: "/aluno/boletim", label: "Meu boletim", icon: ClipboardList },
     { href: "/aluno/boletim", label: "Minha situação", icon: GraduationCap },
+    { href: "/apresentacao", label: "Apresentação", icon: Video },
   ];
   const links = session.role === "admin" ? adminLinks : studentLinks;
   const commonLinks = [{ href: "/configuracoes", label: "Configurações", icon: Settings }];
